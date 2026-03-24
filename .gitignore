@@ -1,0 +1,48 @@
+# Build directories
+build/
+*.o
+*.obj
+*.exe
+*.dll
+*.so
+*.a
+*.lib
+
+# IDE files
+.vs/
+.vscode/
+*.user
+*.suo
+*.ncb
+
+# CMake
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+Makefile
+
+# Android
+android/.gradle/
+android/app/build/
+android/app/.cxx/
+android/local.properties
+*.apk
+*.aab
+
+# Evidence files (optional - keep for documentation)
+# .sisyphus/evidence/
+
+# Temporary files
+*.tmp
+*.temp
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Large binaries
+*.exe
+*.dll
+*.so
+*.dylib
