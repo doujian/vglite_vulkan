@@ -8,12 +8,16 @@ The clear.c sample demonstrates the core VGLite workflow: initialize the library
 
 ## Prerequisites
 
-- **Vulkan SDK** (1.3 or newer)
+- **Vulkan SDK** (1.3 or newer) - for Windows/Linux builds
 - **CMake** (3.20 or newer)
-- **GLFW** (bundled with the project)
-- **Visual Studio 2022** (Windows) or **GCC/Clang** (Linux)
+- **Ninja** (recommended) or Make
+- For Windows: **Visual Studio 2022** OR **MSYS2** with Clang
+- For Linux (on Windows): **WSL** with GCC/Clang
+- For Android: **Android NDK** (r25 or newer)
 
 ## Build (Windows)
+
+### Option 1: Visual Studio 2022
 
 1. Install the Vulkan SDK from [LunarG](https://vulkan.lunarg.com/)
 
@@ -30,7 +34,25 @@ cmake --build . --config Release
 
 4. The executable will be at `build\Release\vglite_clear.exe`
 
+### Option 2: MSYS2 Clang + Ninja (Alternative)
+
+```cmd
+# In MSYS2 CLANG64 terminal
+export PATH="/e/msys64/clang64/bin:$PATH"
+cd vglite_vulkan
+mkdir build && cd build
+cmake .. -G "Ninja" -DCMAKE_C_COMPILER=clang -DCMAKE_BUILD_TYPE=Release
+cmake --build .
+```
+
+Output: `build/bin/vglite_clear.exe`
+
 ## Build (Linux)
+
+> **Note**: Linux builds must be done on a Linux system or via WSL on Windows.
+> MSYS2 on Windows produces Windows executables, not Linux ELF.
+
+### On Linux
 
 1. Install the Vulkan SDK and development libraries:
 
@@ -51,13 +73,32 @@ cmake .. -DCMAKE_BUILD_TYPE=Release
 cmake --build .
 ```
 
-3. The executable will be at `build/vglite_clear`
+3. The executable will be at `build/vglite_clear` (Linux ELF format)
+
+### On Windows via WSL
+
+```powershell
+# Enter WSL
+wsl
+
+# In WSL terminal
+cd /mnt/d/Projects/vglite_vulkan/vglite_vulkan
+mkdir -p build-linux && cd build-linux
+cmake .. -DCMAKE_BUILD_TYPE=Release
+make
+```
+
+Verify it's a Linux executable:
+```bash
+file bin/vglite_clear
+# Output: ELF 64-bit LSB executable, x86-64
+```
 
 ## Build (Android)
 
 1. Install Android SDK and NDK
    - SDK path: `E:\Android\Sdk`
-   - NDK is typically at: `E:\Android\Sdk\ndk\<version>`
+   - NDK is typically at: `E:\Android\Sdk\ndk\<version>` (e.g., `29.0.14206865`)
 
 2. Build with Android NDK (arm64 example):
 
@@ -65,11 +106,13 @@ cmake --build .
 cd vglite_vulkan
 mkdir build-android && cd build-android
 cmake .. -G "Ninja" ^
-    -DCMAKE_TOOLCHAIN_FILE=E:/Android/Sdk/ndk/27.0.12077973/build/cmake/android.toolchain.cmake ^
+    -DCMAKE_TOOLCHAIN_FILE=E:/Android/Sdk/ndk/29.0.14206865/build/cmake/android.toolchain.cmake ^
     -DANDROID_ABI=arm64-v8a ^
     -DANDROID_PLATFORM=android-24
 cmake --build .
 ```
+
+> **Note**: Replace `29.0.14206865` with your actual NDK version.
 
 3. Push to device and run:
 
@@ -89,6 +132,11 @@ Run the clear test executable:
 
 # Linux
 ./vglite_clear
+
+# Android (via adb)
+adb push vglite_clear /data/local/tmp/
+adb shell /data/local/tmp/vglite_clear
+adb pull /data/local/tmp/clear.png .
 ```
 
 The program produces `clear.png` in the current working directory.
