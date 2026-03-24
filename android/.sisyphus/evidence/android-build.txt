@@ -1,0 +1,50 @@
+Android APK Build Log - VGLite Vulkan Project
+==============================================
+Build Date: 2026-03-24
+Status: BUILD SUCCESSFUL
+
+Key Build Information:
+- NDK Version: 29.0.14206865 (Android NDK)
+- CMake Version: 3.22.1
+- Gradle Version: 8.4
+- Build Type: Debug
+- Target ABIs: arm64-v8a, armeabi-v7a
+
+Build Summary:
+- 36 actionable tasks
+- 12 executed
+- 24 up-to-date
+- Build time: ~3 seconds
+
+Fixes Applied During Build:
+1. Removed 'allprojects' repository block from build.gradle (conflict with settings.gradle)
+2. Updated ndkVersion from '25.2.9519653' to '29.0.14206865' in app/build.gradle
+3. Fixed CMakeLists.txt source path (added extra ../ to reach project root)
+4. Added native_app_glue as static library in CMakeLists.txt
+5. Fixed MainActivity.java - removed invalid takeSurface().hashCode() call
+6. Changed ALooper_pollAll to ALooper_pollOnce (deprecated in NDK 29)
+
+Native Libraries Built:
+- libvglite_vulkan.so (arm64-v8a)
+- libvglite_vulkan.so (armeabi-v7a)
+
+Source Files Compiled:
+- main_android.cpp
+- vg_lite.c
+- vulkan_context.c
+- vulkan_buffer.c
+- android_native_app_glue.c (from NDK)
+
+Output:
+- APK Location: app/build/outputs/apk/debug/app-debug.apk
+- APK Size: ~3.0 MB
+
+Warnings:
+- [CXX5106] NDK was located by using ndk.dir property (deprecated method)
+  Recommendation: Delete ndk.dir from local.properties and rely on android.ndkVersion
+
+Build Environment:
+- Android SDK: E:\Android\Sdk
+- Android NDK: E:\Android\Sdk\ndk\29.0.14206865
+- Project Path: D:\Projects\vglite_vulkan\vglite_vulkan\android
+- Java Version: 17 (bundled with Gradle)
