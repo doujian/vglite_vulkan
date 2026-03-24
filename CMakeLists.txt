@@ -21,14 +21,9 @@ include_directories(
 # Link directories
 link_directories(${Vulkan_LIBRARY_DIRS})
 
-# Add GLFW subdirectory
-add_subdirectory(thirty_party/glfw-3.4)
-
 # VGLite source files
 set(VGLITE_SOURCES
     src/main.c
-    src/main_windows.c
-    src/main_linux.c
     src/vulkan_context.c
     src/vulkan_buffer.c
     src/vg_lite.c
@@ -40,7 +35,6 @@ add_executable(vglite_clear ${VGLITE_SOURCES})
 # Link libraries
 target_link_libraries(vglite_clear PRIVATE
     Vulkan::Vulkan
-    glfw
 )
 
 # Set output directory
