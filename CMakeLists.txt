@@ -2,11 +2,23 @@ cmake_minimum_required(VERSION 3.16 FATAL_ERROR)
 
 project(vglite_vulkan LANGUAGES C)
 
-# Vulkan SDK configuration
-set(VULKAN_SDK_PATH "E:/VulkanSDK/1.3.296.0")
+# Vulkan SDK configuration (for Windows/Linux)
+if(NOT ANDROID)
+    set(VULKAN_SDK_PATH "E:/VulkanSDK/1.3.296.0")
+endif()
 
-# Find Vulkan package
-find_package(Vulkan REQUIRED)
+# Find Vulkan package (platform-specific)
+if(ANDROID)
+    # Android NDK configuration
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DVK_USE_PLATFORM_ANDROID_KHR")
+    
+    # Vulkan is part of Android NDK
+    set(Vulkan_FOUND TRUE)
+    set(Vulkan_INCLUDE_DIRS "${ANDROID_NDK}/sources/third_party/vulkan/src/include")
+    set(Vulkan_LIBRARIES vulkan)
+else()
+    find_package(Vulkan REQUIRED)
+endif()
 
 # Set include directories
 set(VGLITE_INCLUDE_DIR "${CMAKE_SOURCE_DIR}/include")
@@ -19,7 +31,9 @@ include_directories(
 )
 
 # Link directories
-link_directories(${Vulkan_LIBRARY_DIRS})
+if(NOT ANDROID)
+    link_directories(${Vulkan_LIBRARY_DIRS})
+endif()
 
 # VGLite source files
 set(VGLITE_SOURCES
@@ -34,7 +48,7 @@ add_executable(vglite_clear ${VGLITE_SOURCES})
 
 # Link libraries
 target_link_libraries(vglite_clear PRIVATE
-    Vulkan::Vulkan
+    ${Vulkan_LIBRARIES}
 )
 
 # Set output directory

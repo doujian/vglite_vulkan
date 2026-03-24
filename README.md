@@ -53,6 +53,32 @@ cmake --build .
 
 3. The executable will be at `build/vglite_clear`
 
+## Build (Android)
+
+1. Install Android SDK and NDK
+   - SDK path: `E:\Android\Sdk`
+   - NDK is typically at: `E:\Android\Sdk\ndk\<version>`
+
+2. Build with Android NDK (arm64 example):
+
+```cmd
+cd vglite_vulkan
+mkdir build-android && cd build-android
+cmake .. -G "Ninja" ^
+    -DCMAKE_TOOLCHAIN_FILE=E:/Android/Sdk/ndk/27.0.12077973/build/cmake/android.toolchain.cmake ^
+    -DANDROID_ABI=arm64-v8a ^
+    -DANDROID_PLATFORM=android-24
+cmake --build .
+```
+
+3. Push to device and run:
+
+```cmd
+adb push bin/vglite_clear /data/local/tmp/
+adb shell /data/local/tmp/vglite_clear
+adb pull /data/local/tmp/clear.png .
+```
+
 ## Usage
 
 Run the clear test executable:

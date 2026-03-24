@@ -1,7 +1,7 @@
 /**
  * VGLite Platform Entry Point
  * 
- * Unified headless rendering for all platforms.
+ * Unified headless rendering for all platforms (Windows, Linux, Android).
  * Creates clear.png with blue background and red rectangle.
  */
 
@@ -12,22 +12,12 @@
 /* Forward declarations */
 static int run_headless_test(void);
 
-/* Android has its own android_main in main_android.cpp */
-#if defined(__ANDROID__)
-int main_android(int argc, char** argv);
-#endif
-
 int main(int argc, char** argv)
 {
     (void)argc;
     (void)argv;
     
-#if defined(__ANDROID__)
-    return main_android(argc, argv);
-#else
-    /* Windows and Linux use the same headless test */
     return run_headless_test();
-#endif
 }
 
 /* Headless VGLite test - works on all platforms */
